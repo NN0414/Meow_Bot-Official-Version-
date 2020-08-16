@@ -11,6 +11,7 @@ bot = commands.Bot(command_prefix='-')
 
 @bot.event
 async def on_ready():
+    bot.unload_extension(F'cmds.test')
     print(">> Bot is online <<")
 
 #----------------------------------------------------------------------------
