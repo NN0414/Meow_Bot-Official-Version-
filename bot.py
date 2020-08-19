@@ -18,10 +18,10 @@ async def on_ready():
 
 #leave
 @bot.event
-async def on_member_remove(member):
+async def on_member_remove(member,members):
     print(f'{member} leave!')
     channel = bot.get_channel(int(jdata['Leave_channel']))
-    await channel.send(f'看來 \n >> {member} << \n 離開唷 感謝你的陪伴')
+    await channel.send(f'看來 \n <@{members.id}> \n 離開唷 感謝你的陪伴')
 #-----------------------------------------------------------------------------
 
 @bot.command()
