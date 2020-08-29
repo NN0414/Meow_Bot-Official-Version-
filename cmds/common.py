@@ -33,6 +33,12 @@ class Common(Cog_Extension):
     async def sayd(self,ctx,*,msg):
         await ctx.message.delete()
         await ctx.send(msg)
+    #近戰爆率warframe算法12x
+    @commands.command()
+    async def ccc(self,ctx,num:str):
+      i1, i2 = num.split(',')
+      sum= float(i1) * ( 760 + float(i2) ) / 100
+      await ctx.send(f'總爆擊率：' + str(sum) + '%') 
 
 
 def setup(bot):
