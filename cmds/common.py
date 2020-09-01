@@ -12,33 +12,32 @@ class Common(Cog_Extension):
     @commands.command()
     async def ping(self, ctx):
         await ctx.send(f'{round(self.bot.latency*1000)} (ms)')  
-    #隨機傳送圖片
-    @commands.command()
-    async def picture(self,ctx):
-        random_pic = random.choice(jdata['pic'])
-        pic = discord.File(random_pic)
-        await ctx.send(file= pic)
     #隨機傳送圖片網址
     @commands.command()
-    async def web(self,ctx):
+    async def picture(self,ctx):
         random_pic = random.choice(jdata['url_pic'])
         await ctx.send(random_pic)
-    #查詢user ID 和 Channel ID
+    #查詢user資訊
     @commands.command()
     async def user(self,ctx):
-        await ctx.send('Author:'+str(ctx.message.author)+'\nAuthor ID:'+ str(ctx.message.author.id)+
-        '\nChannel:'+str(ctx.message.channel)+'\nChannel ID:'+str(ctx.message.channel.id))
+        await ctx.send('Author:'+str(ctx.message.author)+
+        '\nAuthor ID：'     +str(ctx.message.author.id)+
+        '\nChannel：'       +str(ctx.message.channel)+
+        '\nChannel ID：'    +str(ctx.message.channel.id)+
+        '\nGuild.owner：'   +str(ctx.guild.owner)+
+        '\nGuild.owner_id：'+str(ctx.guild.owner_id)+
+        '\nGuild.name：'    +str(ctx.guild.name))
     #說
     @commands.command()
     async def sayd(self,ctx,*,msg):
         await ctx.message.delete()
         await ctx.send(msg)
-    #近戰爆率warframe算法12x
+    #近戰有塞急進猛突12x下的暴擊機率計算器
     @commands.command()
     async def ccc(self,ctx,num:str):
       i1, i2 = num.split(',')
       sum= float(i1) * ( 760 + float(i2) ) / 100
-      await ctx.send(f'總爆擊率：' + str(sum) + '%') 
+      await ctx.send(f'近戰總爆擊機率：' + str(sum) + '%')
 
 
 def setup(bot):
