@@ -19,12 +19,13 @@ bot.remove_command('help')
 #help指令
 @bot.group()
 async def help(ctx):
-    await ctx.send('```css\n'+'普通功能：\n'
+    await ctx.send('普通功能：\n```css\n'
     +str(jdata['command_prefix'])+'ping 顯示機器人的延遲\n'
-    +str(jdata['command_prefix'])+'ccc [基礎近戰暴率,額外暴率加成] 計算近戰塞急進猛突在12x連擊下的暴率\n'
+    +str(jdata['command_prefix'])+'ccc [基礎近戰暴率,連擊數,額外暴率加成] 計算近戰塞急進猛突暴率\n'
+    +str(jdata['command_prefix'])+'wws [基礎近戰觸發,連擊數,額外觸發加成] 計算近戰塞創口潰爛觸發\n'
     +str(jdata['command_prefix'])+'sayd [msg] 使機器人說話\n'
     +str(jdata['command_prefix'])+'picture 隨機發送一張圖片\n'
-    +str(jdata['command_prefix'])+'user 顯示個人訊息\n僅限管理員的功能：\n'
+    +str(jdata['command_prefix'])+'user 顯示個人訊息\n```僅限管理員的功能：\n```css\n'
     +str(jdata['command_prefix'])+'clear [num] 刪除指定數量的聊天內容\n```')
 
 #leave
