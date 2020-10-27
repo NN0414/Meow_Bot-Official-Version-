@@ -4,6 +4,7 @@ from core.classes import Cog_Extension
 import random
 import json
 
+
 with open('setting.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
 
@@ -11,13 +12,12 @@ class Common(Cog_Extension):
     #ping
     @commands.command()
     async def ping(self, ctx):
-        await ctx.send(f'{round(self.bot.latency*1000)} (ms)')  
+        await ctx.send(f'{round(self.bot.latency*1000)} 毫秒 (ms)')  
     #隨機傳送圖片網址
     @commands.command()
     async def picture(self,ctx):
         random_pic = random.choice(jdata['url_pic'])
         await ctx.send(random_pic)
-    #查詢user資訊
     #查詢user資訊
     @commands.command()
     async def user(self,ctx):
@@ -38,25 +38,32 @@ class Common(Cog_Extension):
     async def sayd(self,ctx,*,msg):
         await ctx.message.delete()
         await ctx.send(msg)
-    #近戰有塞急進猛突暴擊機率計算器
+        
+    #近戰有塞急進猛突12x下的暴擊機率計算器
     @commands.command()
     async def ccc(self,ctx,num:str):
       i1, i2, i3 = num.split(',')
-      sum= float(i1) * ( 100 + 60 * ( float(i2) - 1 ) + float(i3) )  / 100
-      #總暴率=基礎暴率× (1 + 急進猛突的加成 × (連擊倍率-1)+其他暴擊加成)
-      await ctx.send(f'近戰總爆擊機率：' + str(sum) + '%')
-    #創口觸發版 類似同上
+      if int(i2) <= 13:
+        sum= float(i1) * ( 100 + 60 * ( float(i2) - 1 ) + float(i3) )  / 100
+        #總暴率=基礎暴率× (1 + 急進猛突的加成 × (連擊倍率-1)+其他暴擊加成)
+        await ctx.send(f'近戰總爆擊機率：' + str(sum) + '%')
+      else:
+        await ctx.send(f'連擊最高只有到13x啦')
     @commands.command()
     async def wws(self,ctx,num:str):
       i1, i2, i3 = num.split(',')
-      sum= float(i1) * ( 100 + 40 * ( float(i2) - 1 ) + float(i3) )  / 100
-      #總觸發=基礎觸發× (1 + 觸發加成 × (連擊倍率-1)+其他暴擊加成)
-      await ctx.send(f'近戰總觸發機率：' + str(sum) + '%')
+      if int(i2) <= 13:
+        sum= float(i1) * ( 100 + 40 * ( float(i2) - 1 ) + float(i3) )  / 100
+        #總觸發=基礎觸發× (1 + 觸發加成 × (連擊倍率-1)+其他暴擊加成)
+        await ctx.send(f'近戰總觸發機率：' + str(sum) + '%')
+      else:
+        await ctx.send(f'連擊最高只有到13x啦')
+
     @commands.command()
     async def sendch(self,ctx,chid,*,msg):
         ch = self.bot.get_channel(int(chid))
         await ch.send(msg)
-
+    
     @commands.command()
     async def send(self,ctx,userid,*,msg):
         if '!' in userid:
@@ -70,6 +77,14 @@ class Common(Cog_Extension):
             user1 = str(user[1]).split('>')
             user2 = self.bot.get_user(int(user1[0]))
             await user2.send(msg)
-
+    @commands.command()
+    async def 環形裝置(self,ctx):
+      await ctx.send(f'```維加環形裝置→太空站          & 微蟎蛛型機\n告達環形裝置→昇華實驗室      & 賽托蛛型機(瓦內蜘蛛)\n索拉環形裝置→潤盈寺          & 凱塔蛛型機\n聖油環形裝置→利潤收割者圓蛛\n天藍環形裝置→剝削者圓蛛```')
+    
+    @commands.command()
+    async def Milos(self,ctx):
+      await ctx.channel.purge(limit=1)
+      await ctx.send(self.bot.get_emoji(int(710157217948631085)))
+    
 def setup(bot):
     bot.add_cog(Common(bot))

@@ -25,9 +25,9 @@ async def help(ctx):
     +str(jdata['command_prefix'])+'wws [基礎近戰觸發,連擊數,額外觸發加成] 計算近戰塞創口潰爛觸發\n'
     +str(jdata['command_prefix'])+'sayd [msg] 使機器人說話\n'
     +str(jdata['command_prefix'])+'picture 隨機發送一張圖片\n'
+    +str(jdata['command_prefix'])+'calc [數學算式]簡易的運算(支援: + - * / ( ) 小數 科學記號)中間不能有空格 \n'
     +str(jdata['command_prefix'])+'user 顯示個人訊息\n```僅限管理員的功能：\n```css\n'
     +str(jdata['command_prefix'])+'clear [num] 刪除指定數量的聊天內容\n```')
-
 #leave
 @bot.event
 async def on_member_remove(member):
