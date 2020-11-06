@@ -9,16 +9,20 @@ class easycalc(Cog_Extension):
         self.legal = re.compile(r'^[\.\de\+\-\*/% \(\)]*$')
         symbol_list = ['[\d]+e[\+\-][\d]+', '[\d\.]+', '\+', '\-', '\*', '/', '%', '\(', '\)']
         self.symbol = re.compile('(%s)' % '|'.join(symbol_list))
+        
     @commands.command(name='calc', aliases=['計算機' , '計算'])
-    async def calc(self,ctx,expr):
+    async def calc(self,ctx, *args):
+      msg = self.Calculation(' '.join(args))
+      await ctx.send(msg)
+
+    def Calculation(self, expr):
       try:
         self._is_easy(expr)
         self._no_exp(expr)
         self._is_calculable(expr)
-        await ctx.send('計算結果：%s = %s' % (self._pretty_expr(expr), str(eval(expr)).upper()))
+        return '計算結果：%s = %s' % (self._pretty_expr(expr), str(eval(expr)).upper())
       except Exception as e:
-        await ctx.send(str(e))
-
+            return str(e)
     def _pretty_expr(self, expr):
         result = self.symbol.findall(expr)
         return ' '.join(result).replace('( ', '(').replace(' )', ')')
@@ -51,7 +55,7 @@ class easycalc(Cog_Extension):
 
     class NotCalculable(Exception):
         def __str__(self):
-            return '運算式格是錯誤'
+            return '運算式格式錯誤'
 
     class DividByZero(Exception):
         def __str__(self):
