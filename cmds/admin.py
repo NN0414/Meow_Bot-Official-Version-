@@ -4,7 +4,7 @@ from core.classes import Cog_Extension
 
 class admin(Cog_Extension):
     #清除訊息
-    @commands.command()
+    @commands.command(name='clear', aliases=['clean' , '清除'])
     async def clear(self,ctx,num:int):
         if ctx.message.author.id == ctx.guild.owner_id:
             await ctx.channel.purge(limit=num+1)

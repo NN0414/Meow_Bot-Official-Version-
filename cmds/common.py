@@ -10,16 +10,16 @@ with open('setting.json', 'r', encoding='utf8') as jfile:
 
 class Common(Cog_Extension):
     #ping
-    @commands.command()
+    @commands.command(name= 'ping', aliases=['延遲' , '機器人延遲' , 'delay'])
     async def ping(self, ctx):
         await ctx.send(f'{round(self.bot.latency*1000)} 毫秒 (ms)')  
     #隨機傳送圖片網址
-    @commands.command()
+    @commands.command(name= 'picture', aliases=['pic' , '圖片'])
     async def picture(self,ctx):
         random_pic = random.choice(jdata['url_pic'])
         await ctx.send(random_pic)
     #查詢user資訊
-    @commands.command()
+    @commands.command(name= 'user', aliases=['使用者資訊' , '用戶資訊'])
     async def user(self,ctx):
         arg = ctx.message.channel
         args = str(arg).split(' ')
@@ -34,13 +34,13 @@ class Common(Cog_Extension):
             msg = msg +'\nGuild.owner:'+str(ctx.guild.owner) +'\nGuild.owner_id:' +str(ctx.guild.owner_id)+'\nGuild.name:' +str(ctx.guild.name)
             await ctx.send(msg)
     #說
-    @commands.command()
+    @commands.command(name= 'sayd', aliases=['說' , '機器人說'])
     async def sayd(self,ctx,*,msg):
         await ctx.message.delete()
         await ctx.send(msg)
         
     #近戰有塞急進猛突12x下的暴擊機率計算器
-    @commands.command()
+    @commands.command(name= 'ccc', aliases=['急進猛突'])
     async def ccc(self,ctx,num:str):
       i1, i2, i3 = num.split(',')
       if int(i2) <= 13:
@@ -49,7 +49,7 @@ class Common(Cog_Extension):
         await ctx.send(f'近戰總爆擊機率：' + str(sum) + '%')
       else:
         await ctx.send(f'連擊最高只有到13x啦')
-    @commands.command()
+    @commands.command(name= 'wws', aliases=['創口潰爛'])
     async def wws(self,ctx,num:str):
       i1, i2, i3 = num.split(',')
       if int(i2) <= 13:
@@ -59,12 +59,12 @@ class Common(Cog_Extension):
       else:
         await ctx.send(f'連擊最高只有到13x啦')
 
-    @commands.command()
+    @commands.command(name= 'sendch', aliases=['發送至頻道'])
     async def sendch(self,ctx,chid,*,msg):
         ch = self.bot.get_channel(int(chid))
         await ch.send(msg)
     
-    @commands.command()
+    @commands.command(name= 'send', aliases=['私訊'])
     async def send(self,ctx,userid,*,msg):
         if '!' in userid:
             user = str(userid).split('!')
@@ -81,7 +81,7 @@ class Common(Cog_Extension):
     async def 環形裝置(self,ctx):
       await ctx.send(f'```維加環形裝置→太空站          & 微蟎蛛型機\n告達環形裝置→昇華實驗室      & 賽托蛛型機(瓦內蜘蛛)\n索拉環形裝置→潤盈寺          & 凱塔蛛型機\n聖油環形裝置→利潤收割者圓蛛\n天藍環形裝置→剝削者圓蛛```')
     
-    @commands.command()
+    @commands.command(name= 'Milos', aliases=['香蕉君'])
     async def Milos(self,ctx):
       await ctx.channel.purge(limit=1)
       await ctx.send(self.bot.get_emoji(int(710157217948631085)))

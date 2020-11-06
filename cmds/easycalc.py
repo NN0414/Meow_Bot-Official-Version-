@@ -9,7 +9,7 @@ class easycalc(Cog_Extension):
         self.legal = re.compile(r'^[\.\de\+\-\*/% \(\)]*$')
         symbol_list = ['[\d]+e[\+\-][\d]+', '[\d\.]+', '\+', '\-', '\*', '/', '%', '\(', '\)']
         self.symbol = re.compile('(%s)' % '|'.join(symbol_list))
-    @commands.command()
+    @commands.command(name='calc', aliases=['計算機' , '計算'])
     async def calc(self,ctx,expr):
       try:
         self._is_easy(expr)

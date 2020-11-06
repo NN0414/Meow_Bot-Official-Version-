@@ -30,7 +30,7 @@ def timer():
     delmsg()
 
 class invite(Cog_Extension):
-    @commands.command()
+    @commands.command(name='invite', aliases=['邀請'])
     async def invite(self,ctx,uuid):
         await ctx.message.delete()
         if lstat == 0:

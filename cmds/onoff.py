@@ -3,7 +3,7 @@ from discord.ext import commands
 from core.classes import Cog_Extension
 
 class onoff(Cog_Extension):
-    @commands.command()
+    @commands.command(name='member', aliases=['顯示成員' , '成員'])
     async def member(self,ctx):
         memberlist = ctx.guild.members
         onlinelist = []
@@ -32,7 +32,7 @@ class onoff(Cog_Extension):
         print('\n========offline========\n')
         for i3 in offlinelist:
             print(i3)
-    @commands.command()
+    @commands.command(name='online', aliases=['顯示上線成員' , '上線'])
     async def online(self,ctx):
         memberlist = ctx.guild.members
         onlineidlist = []
@@ -44,7 +44,7 @@ class onoff(Cog_Extension):
             msg = msg + '-' + str(i2) + '\n'
         msg = msg + '```'
         await ctx.send(msg)
-    @commands.command()
+    @commands.command(name='offline', aliases=['顯示下線成員', '下線', '顯示離線成員', '離線'])
     async def offline(self,ctx):
         memberlist = ctx.guild.members
         offlineidlist = []
