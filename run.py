@@ -18,6 +18,7 @@ bot = commands.Bot(command_prefix='-',intents = intents)
 async def on_ready():
     bot.unload_extension(F'cmds.test')
     print(">> Bot is online <<")
+    print(">> 目前版本：v2.1.6 <<")
 
 #----------------------------------------------------------------------------
 bot.remove_command('help')
