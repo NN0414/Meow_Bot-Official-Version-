@@ -40,24 +40,34 @@ class Common(Cog_Extension):
         await ctx.send(msg)
         
     #近戰有塞急進猛突12x下的暴擊機率計算器
-    @commands.command(name= 'ccc', aliases=['急進猛突'])
-    async def ccc(self,ctx,num:str):
-      i1, i2, i3 = num.split(',')
+    @commands.command(name='ccc', aliases=['急進猛突' , '急進' , '極盡'])
+    async def ccc(self,ctx, *args):
+      msg = self.BloodRush(' '.join(args))
+      await ctx.send(msg)
+
+    def BloodRush(self,num):
+      i1, i2, i3 = num.split(' ')
       if int(i2) <= 13:
         sum= float(i1) * ( 100 + 60 * ( float(i2) - 1 ) + float(i3) )  / 100
         #總暴率=基礎暴率× (1 + 急進猛突的加成 × (連擊倍率-1)+其他暴擊加成)
-        await ctx.send(f'近戰總爆擊機率：' + str(sum) + '%')
+        return ('近戰總爆擊機率：' + str(sum) + '%')
       else:
-        await ctx.send(f'連擊最高只有到13x啦')
-    @commands.command(name= 'wws', aliases=['創口潰爛'])
-    async def wws(self,ctx,num:str):
-      i1, i2, i3 = num.split(',')
+        return ('連擊最高只有到 13x 啦')
+    #----------------------------------
+    #近戰有塞創口潰爛12x下的觸發機率計算器    
+    @commands.command(name= 'wws', aliases=['創口潰爛' , '創口'])
+    async def wws(self,ctx,*args):
+      msg = self.WeepingWounds(' '.join(args))
+      await ctx.send(msg)
+
+    def WeepingWounds(self,num):
+      i1, i2, i3 = num.split(' ')
       if int(i2) <= 13:
         sum= float(i1) * ( 100 + 40 * ( float(i2) - 1 ) + float(i3) )  / 100
-        #總觸發=基礎觸發× (1 + 觸發加成 × (連擊倍率-1)+其他暴擊加成)
-        await ctx.send(f'近戰總觸發機率：' + str(sum) + '%')
+        #總觸發=基礎觸發× (1 + 觸發加成 × (連擊倍率-1)+其他觸發加成)
+        return ('近戰總觸發機率：' + str(sum) + '%')
       else:
-        await ctx.send(f'連擊最高只有到13x啦')
+        return ('連擊最高只有到13x啦')
 
     @commands.command(name= 'sendch', aliases=['發送至頻道'])
     async def sendch(self,ctx,chid,*,msg):
@@ -81,9 +91,9 @@ class Common(Cog_Extension):
     async def 環形裝置(self,ctx):
       await ctx.send(f'```維加環形裝置→太空站          & 微蟎蛛型機\n告達環形裝置→昇華實驗室      & 賽托蛛型機(瓦內蜘蛛)\n索拉環形裝置→潤盈寺          & 凱塔蛛型機\n聖油環形裝置→利潤收割者圓蛛\n天藍環形裝置→剝削者圓蛛```')
     
-    @commands.command(name= 'Milos', aliases=['香蕉君'])
+    @commands.command(name= 'Milos', aliases=['香蕉君' , '象徵自由的男人'])
     async def Milos(self,ctx):
-      await ctx.channel.purge(limit=1)
+      #await ctx.channel.purge(limit=1)
       await ctx.send(self.bot.get_emoji(int(710157217948631085)))
     
 def setup(bot):
