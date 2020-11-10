@@ -32,7 +32,7 @@ class onoff(Cog_Extension):
         print('\n========offline========\n')
         for i3 in offlinelist:
             print(i3)
-    @commands.command(name='online', aliases=['顯示上線成員' , '上線'])
+    @commands.command(name='online', aliases=['顯示上線成員' , '上線' , '在線'])
     async def online(self,ctx):
         memberlist = ctx.guild.members
         onlineidlist = []

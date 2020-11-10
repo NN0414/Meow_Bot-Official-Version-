@@ -3,6 +3,7 @@ from discord.ext import commands
 from core.classes import Cog_Extension
 import os
 
+
 class test(Cog_Extension):
     #清除訊息
     @commands.command(name='test', aliases=['機器人測試', '測試'])
@@ -15,7 +16,7 @@ class test(Cog_Extension):
       member = guild.get_member(int(uid))
       await ctx.send(member)
       print(member)
-  
+
   
 def setup(bot):
     bot.add_cog(test(bot))
