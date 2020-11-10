@@ -17,8 +17,9 @@ bot = commands.Bot(command_prefix='-',intents = intents)
 @bot.event
 async def on_ready():
     bot.unload_extension(F'cmds.test')
+    print(">> 目前版本：v2.1.7 <<")
     print(">> Bot is online <<")
-    print(">> 目前版本：v2.1.6 <<")
+   
 
 #----------------------------------------------------------------------------
 bot.remove_command('help')
@@ -46,32 +47,36 @@ async def help(ctx):
 
 #@bot.command(name='alias', aliases=['別名'])
 #async def alias(ctx):
-
  
+#-----------------------------------------------------------------------------
+f = '[%Y-%m-%d %H:%M:%S]'
+time_delta = timedelta(hours=+8)
+utc_8_date_str = (datetime.utcnow()+time_delta).strftime(f)
 #-----------------------------------------------------------------------------
 
 @bot.command(name= 'load', aliases=['載入' , '載入模組'])
 async def load(ctx, extension):
     bot.load_extension(F'cmds.{extension}')
-    await ctx.send(F'已加載 {extension}')
-    print(F'\n---------------------------------\n已加載 {extension}\n---------------------------------\n')
+    await ctx.send(f'\n已加載：{extension}')
+    print('\n---------------------------------\n' + utc_8_date_str + f'\n已加載 {extension}\n---------------------------------\n')
+
 
 @bot.command(name= 'unload', aliases=['卸載' , '卸載模組'])
 async def unload(ctx, extension):
     bot.unload_extension(F'cmds.{extension}')
-    await ctx.send(F'已卸載 {extension}')
-    print(F'\n---------------------------------\n已卸載 {extension}\n---------------------------------\n')
+    await ctx.send(f'\n已卸載：{extension}')
+    print('\n---------------------------------\n' + utc_8_date_str + f'\n已卸載 {extension}\n---------------------------------\n')
 
-@bot.command(name= 'reload', aliases=['重載' , '重載模組' , '重新載入模組'])
+@bot.command(name= 'reload', aliases=['重載' , '重載模組' , '重新載入模組', '重新載入'])
 async def reload(ctx, extension):
     bot.reload_extension(F'cmds.{extension}')
-    await ctx.send(F'已重新加載 {extension}')
-    print(F'\n---------------------------------\n已重新加載 {extension}\n---------------------------------\n')
+    await ctx.send(f'\n已重新載入：{extension}')
+    print('\n---------------------------------\n' + utc_8_date_str + f'\n已重新載入 {extension}\n---------------------------------\n')
 #機器人關閉系統--------------------------------------------   
 @bot.command(name= 'disable', aliases=['disconnect' , 'shutdown' , '關閉機器人'])
 async def disable(ctx):
-    print('機器人已關閉')
-    await ctx.send('機器人已關閉') #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    print(utc_8_date_str + '機器人已關閉')
+    await ctx.send(utc_8_date_str + '\n機器人已關閉') #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
     await bot.close()
     
 #--------------------------------
