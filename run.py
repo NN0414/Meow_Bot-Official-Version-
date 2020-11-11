@@ -19,7 +19,7 @@ bot = commands.Bot(command_prefix='-',intents = intents)
 @bot.event
 async def on_ready():
     bot.unload_extension(F'cmds.test')
-    print(">> 目前版本：v2.1.8 <<")
+    print(">> 目前版本：v2.1.9 <<")
     print(">> Meow_Bot is online <<")
    
 
@@ -41,7 +41,8 @@ async def help(ctx):
     +str(jdata['command_prefix'])+'calc [數學算式]簡易的運算(支援: + - * / ( ) 小數 科學記號)中間不能有空格 不支援指數運算 \n'
     +str(jdata['command_prefix'])+'alias 顯示各個指令的別名\n'
     +str(jdata['command_prefix'])+'user 顯示個人訊息\n```僅限管理員的功能：\n```css\n'
-    +str(jdata['command_prefix'])+'clear [num] 刪除指定數量的聊天內容\n```')
+    +str(jdata['command_prefix'])+'clear [num] 刪除指定數量的聊天內容\n'
+    +'```')
 
 
 @bot.command(name='alias', aliases=['別名'])
@@ -69,22 +70,25 @@ utc_8_date_str = (datetime.utcnow()+time_delta).strftime(f)
 
 @bot.command(name= 'load', aliases=['載入' , '載入模組' , '啟用'])
 async def load(ctx, extension):
-    bot.load_extension(F'cmds.{extension}')
-    await ctx.send(f'\n已加載：{extension}')
-    print('\n---------------------------------\n' + utc_8_date_str + f'\n已加載 {extension}\n---------------------------------\n')
+    if ctx.author.id == jdata['owner']:
+        bot.load_extension(F'cmds.{extension}')
+        await ctx.send(f'\n已加載：{extension}')
+        print('\n---------------------------------\n' + utc_8_date_str + f'\n已加載 {extension}\n---------------------------------\n')
 
 
 @bot.command(name= 'unload', aliases=['卸載' , '卸載模組' , '停用'])
 async def unload(ctx, extension):
-    bot.unload_extension(F'cmds.{extension}')
-    await ctx.send(f'\n已卸載：{extension}')
-    print('\n---------------------------------\n' + utc_8_date_str + f'\n已卸載 {extension}\n---------------------------------\n')
+    if ctx.author.id == jdata['owner']:
+        bot.unload_extension(F'cmds.{extension}')
+        await ctx.send(f'\n已卸載：{extension}')
+        print('\n---------------------------------\n' + utc_8_date_str + f'\n已卸載 {extension}\n---------------------------------\n')
 
 @bot.command(name= 'reload', aliases=['重載' , '重載模組' , '重新載入模組', '重新加載', '重啟'])
 async def reload(ctx, extension):
-    bot.reload_extension(F'cmds.{extension}')
-    await ctx.send(f'\n已重新載入：{extension}')
-    print('\n---------------------------------\n' + utc_8_date_str + f'\n已重新載入 {extension}\n---------------------------------\n')
+    if ctx.author.id == jdata['owner']:
+        bot.reload_extension(F'cmds.{extension}')
+        await ctx.send(f'\n已重新載入：{extension}')
+        print('\n---------------------------------\n' + utc_8_date_str + f'\n已重新載入 {extension}\n---------------------------------\n')
 #機器人關閉系統--------------------------------------------   
 
 @bot.command(name= 'disconnect', aliases=['disable' , 'shutdown' , '關閉機器人' , '關機' , '關閉'])

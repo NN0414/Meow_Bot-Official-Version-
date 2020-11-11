@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import os
-import time
+import asyncio
 
 from core.classes import Cog_Extension
 
@@ -15,19 +15,15 @@ def new(a,b,c,d,e):
     lstat = d
     lmsg = e
     if lstat == 1:
-        timer()
+        asyncio.run(delmsg())
     else:
         pass
     return luid,lchid,lstat,lmsgid,lmsg
 
 async def delmsg():
+    await asyncio.sleep(5)
     await lmsg.delete()
     new(0,0,0,0,0)
-
-def timer():
-    print('剩下5秒')
-    time.sleep(5)
-    delmsg()
 
 class invite(Cog_Extension):
     @commands.command(name='invite', aliases=['邀請'])
