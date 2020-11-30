@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 import os
 import asyncio
-
 from core.classes import Cog_Extension
 
 luid = lchid = lstat = lmsgid = lmsg = 0

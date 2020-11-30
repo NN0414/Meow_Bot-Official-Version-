@@ -1,13 +1,41 @@
-import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
 import random
 import json
 from random import randint
+import requests
+import opencc
 
 
 with open('setting.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
+
+try:
+  html_eidolon = requests.get('https://api.warframestat.us/pc/cetusCycle')
+  if html_eidolon.status_code != 200:
+    print("API出錯！")
+  else:
+    data_eidolon = json.loads(html_eidolon.text)
+  #-------------------------------------------------------------------------
+  html_vallis = requests.get('https://api.warframestat.us/pc/vallisCycle')
+  if html_vallis.status_code != 200:
+    print("API出錯！")
+  else:
+    data_vallis = json.loads(html_vallis.text)
+  #-------------------------------------------------------------------------
+  html_earth = requests.get('https://api.warframestat.us/pc/tc/earthCycle')
+  if html_vallis.status_code != 200:
+    print("API出錯！")
+  else:
+    data_earth = json.loads(html_earth.text)
+  #-------------------------------------------------------------------------
+  html_cambion = requests.get('https://api.warframestat.us/pc/cambionCycle')
+  if html_vallis.status_code != 200:
+    print("API出錯！")
+  else:
+    data_cambion = json.loads(html_cambion.text)
+except:
+  print("來源失效")
 
 class Common(Cog_Extension):
     #ping
@@ -37,39 +65,53 @@ class Common(Cog_Extension):
             await ctx.send(msg)
     #說
     @commands.command(name= 'sayd', aliases=['說' , '機器人說'])
-    async def sayd(self,ctx,*,msg):
+    async def sayd(self,ctx,*value):
+      if value == ():
+        await ctx.send("sayd [msg]")
+      else:
+        msg = ' '.join(value)
         await ctx.message.delete()
         await ctx.send(msg)
         
+    @commands.command()
+    async def emmsg(self,ctx,msgid,em):
+        msg = await ctx.message.channel.fetch_message(int(msgid))
+        print(msg.content)
+        await ctx.message.delete()
+        if len(em)<18:
+            await msg.add_reaction(em)
+        else:
+            emoji = self.bot.get_emoji(int(((em.split('>'))[0])[-18:]))
+            await msg.add_reaction(emoji)
+        
     #近戰有塞急進猛突12x下的暴擊機率計算器
     @commands.command(name='ccc', aliases=['急進猛突' , '急進' , '極盡'])
-    async def ccc(self,ctx, *args):
-      msg = self.BloodRush(' '.join(args))
-      await ctx.send(msg)
-
-    def BloodRush(self,num):
-      i1, i2, i3 = num.split(' ')
-      if int(i2) <= 13:
-        sum= float(i1) * ( 100 + 60 * ( float(i2) - 1 ) + float(i3) )  / 100
-        #總暴率=基礎暴率× (1 + 急進猛突的加成 × (連擊倍率-1)+其他暴擊加成)
-        return ('近戰總爆擊機率：' + str(sum) + '%')
-      else:
-        return ('連擊最高只有到 13x 啦')
+    async def ccc(self,ctx,*,num):
+      try:
+        i1, i2, i3 = num.split(' ')
+        if int(i2) <= 13:
+          sum= float(i1) * ( 100 + 60 * ( float(i2) - 1 ) + float(i3) )  / 100
+          #總暴率=基礎暴率× (1 + 急進猛突的加成 × (連擊倍率-1)+其他暴擊加成)
+          await ctx.send('近戰總爆擊機率：' + str(sum) + '%')
+        else:
+          await ctx.send('連擊最高只有到 13x 啦')
+      except:
+        await ctx.send(jdata['command_prefix']+'ccc [基礎近戰暴率 連擊數 額外暴率加成]')
     #----------------------------------
     #近戰有塞創口潰爛12x下的觸發機率計算器    
     @commands.command(name= 'wws', aliases=['創口潰爛' , '創口'])
-    async def wws(self,ctx,*args):
-      msg = self.WeepingWounds(' '.join(args))
-      await ctx.send(msg)
+    async def wws(self,ctx,*,num):
+      try:
+        i1, i2, i3 = num.split(' ')
+        if int(i2) <= 13:
+          sum= float(i1) * ( 100 + 40 * ( float(i2) - 1 ) + float(i3) )  / 100
+          #總觸發=基礎觸發× (1 + 觸發加成 × (連擊倍率-1)+其他觸發加成)
+          await ctx.send('近戰總觸發機率：' + str(sum) + '%')
+        else:
+          await ctx.send('連擊最高只有到13x啦')
+      except:
+        await ctx.send(jdata['command_prefix']+'wws [基礎近戰觸發 連擊數 額外觸發加成]')
 
-    def WeepingWounds(self,num):
-      i1, i2, i3 = num.split(' ')
-      if int(i2) <= 13:
-        sum= float(i1) * ( 100 + 40 * ( float(i2) - 1 ) + float(i3) )  / 100
-        #總觸發=基礎觸發× (1 + 觸發加成 × (連擊倍率-1)+其他觸發加成)
-        return ('近戰總觸發機率：' + str(sum) + '%')
-      else:
-        return ('連擊最高只有到13x啦')
 
     @commands.command(name= 'sendch', aliases=['發送至頻道'])
     async def sendch(self,ctx,chid,*,msg):
@@ -98,7 +140,46 @@ class Common(Cog_Extension):
     async def Milos(self,ctx):
       #await ctx.channel.purge(limit=1)
       await ctx.send(self.bot.get_emoji(int(710157217948631085)))
-    #踩地雷
+    #突擊
+    @commands.command(name='Sortie',aliases=['突擊' , '突襲'])
+    async def sortie(self,ctx):
+      try:
+        cc = opencc.OpenCC('s2t')
+        count = 1
+        html_sortie = requests.get('https://api.warframestat.us/pc/zh/sortie',headers={'Accept-Language':'tc'})
+        data_sortie = json.loads(html_sortie.text)
+        await ctx.send(f"```fix\n突擊剩餘時間：{data_sortie['eta']}\n{data_sortie['boss']} 的部隊，{data_sortie['faction']}陣營```")
+        for missions in data_sortie['variants']:
+          node = cc.convert(missions['node'])
+          missionType= cc.convert(missions['missionType'])
+          modifier = cc.convert(missions['modifier'])
+          await ctx.send(f'```ini\n突擊 [{count}]\n節點：{node} 等級：[{35+15*count} ~ {40+20*count}]\n任務：{missionType}\n狀態：{modifier}```')
+          count += 1
+      except:
+        await ctx.send("該功能目前無法使用")
+
+    @commands.command(name='worldstate',aliases=['開放世界時間' , '平原時間' , 'WF時間' , 'openworldstate'])
+    async def WFworldtime(self,ctx):
+      try:
+        if (data_eidolon["state"]=="day"):
+          await ctx.send("距離[夜靈平原]晚上還有：" + data_eidolon["timeLeft"])
+        elif (data_eidolon["state"]=="night"):
+          await ctx.send("距離[夜靈平原]早上還有：" + data_eidolon["timeLeft"])
+        if (data_earth["state"]=="day"):
+          await ctx.send("距離[地球Earth]晚上還有：" + data_earth["timeLeft"])
+        elif (data_earth["state"]=="night"):
+          await ctx.send("距離[地球Earth]早上還有：" + data_earth["timeLeft"])
+        if (data_vallis["state"]=="warm"):
+          await ctx.send("距離[奧布山谷]寒冷還有：" + data_vallis["timeLeft"])
+        elif (data_vallis["state"]=="cold"):
+          await ctx.send("距離[奧布山谷]溫暖還有：" + data_vallis["timeLeft"])
+        if (data_cambion["active"]=="fass"):
+          await ctx.send("距離[魔裔禁地]Vome還有：" + data_eidolon["timeLeft"])
+        elif (data_cambion["active"]=="vome"):
+          await ctx.send("距離[魔裔禁地]Fass還有：" + data_eidolon["timeLeft"])
+      except:
+        await ctx.send("該功能目前無法使用")
+   
     @commands.command(name='ms', aliases=['踩地雷'])
     async def minesweeper(self, ctx, width: int = 10, height: int = 10, difficulty: int = 30):
       grid = tuple([['' for i in range(width)] for j in range(height)])
@@ -146,6 +227,8 @@ class Common(Cog_Extension):
           msg += '||' + tile + '|| '
         msg += '\n'
       await ctx.send(msg)
+
+  
     
 def setup(bot):
     bot.add_cog(Common(bot))

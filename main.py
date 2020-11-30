@@ -2,14 +2,16 @@ import discord
 from discord.ext import commands
 import os
 import json
+#import keep_alive
 from datetime import datetime,timedelta
+import asyncio
+import requests
 
-
-os.system('pip install --upgrade pip')
-os.system('pip install --upgrade discord.py')
+#os.system('pip install --upgrade pip')
+#os.system('pip install opencc-python-reimplemented')
+#os.system('pip install --upgrade discord.py')
 
 intents = discord.Intents.all()
-
 
 with open('setting.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
@@ -19,10 +21,11 @@ bot = commands.Bot(command_prefix='-',intents = intents)
 @bot.event
 async def on_ready():
     bot.unload_extension(F'cmds.test')
-    print(">> 目前版本：v2.1.9 <<")
+    print(">> 目前版本：v2.2.8 <<")
     print(">> Meow_Bot is online <<")
-   
-
+    while(1):
+      requests.get("https://friendbot.meowxiaoxiang.repl.co")
+      await asyncio.sleep(80)
 #----------------------------------------------------------------------------
 bot.remove_command('help')
 #help指令
@@ -38,7 +41,9 @@ async def help(ctx):
     +str(jdata['command_prefix'])+'offline 顯示離線名單\n'
     +str(jdata['command_prefix'])+'picture 隨機發送一張圖片\n'
     +str(jdata['command_prefix'])+'ms 踩地雷\n'
-    +str(jdata['command_prefix'])+'calc [數學算式]簡易的運算(支援: + - * / ( ) 小數 科學記號)中間不能有空格 不支援指數運算 \n'
+    +str(jdata['command_prefix'])+'sortie 顯示今日Warframe的突擊\n'
+    +str(jdata['command_prefix'])+'worldstate 顯示Warframe各個世界時間(包含開放世界和地球)\n'
+    +str(jdata['command_prefix'])+'calc [數學算式]簡易的四則運算(支援: + - * / ( ) 小數 科學記號e=10^)中間不能有空格 不支援指數運算 \n'
     +str(jdata['command_prefix'])+'alias 顯示各個指令的別名\n'
     +str(jdata['command_prefix'])+'user 顯示個人訊息\n```僅限管理員的功能：\n```css\n'
     +str(jdata['command_prefix'])+'clear [num] 刪除指定數量的聊天內容\n'
@@ -58,6 +63,8 @@ async def alias(ctx):
     +str(jdata['command_prefix'])+'offline [顯示下線成員 , 下線 , 顯示離線成員 , 離線]\n'
     +str(jdata['command_prefix'])+'picture：[pic , 圖片]\n'
     +str(jdata['command_prefix'])+'ms：[踩地雷]\n'
+    +str(jdata['command_prefix'])+'sortie：[突擊 , 突襲]\n'
+    +str(jdata['command_prefix'])+'worldstate [開放世界時間 , 平原時間 , WF時間 , openworldstate]\n'
     +str(jdata['command_prefix'])+'calc：[計算機 , 計算]\n'
     +str(jdata['command_prefix'])+'user：[使用者資訊 , 用戶資訊]\n'
     +str(jdata['command_prefix'])+'clear：[clean , 清除]\n```')
@@ -68,27 +75,79 @@ time_delta = timedelta(hours=+8)
 utc_8_date_str = (datetime.utcnow()+time_delta).strftime(f)
 #-----------------------------------------------------------------------------
 
+@bot.command(name= 'listmod', aliases=['列出所有模組' , '列出模組'])
+async def listmodel(ctx):
+  modlist = []
+  modindex = 0
+  for modname in os.listdir('./cmds'):
+      if modname.endswith('.py'):
+          modlist.append(modindex)
+          modlist.append(modname)
+          modindex += 1
+  modindex = 0
+  msg = ''
+  dou = 0
+  for i in modlist:
+      if dou == 0:
+          dou+=1
+      else:
+          msg = msg + '[' + str(i)[:-3] +']'
+          dou = 0
+  await ctx.send(f'```ini\n此機器人目前擁有的所有模組：\n{msg}```')
+
+
+
 @bot.command(name= 'load', aliases=['載入' , '載入模組' , '啟用'])
-async def load(ctx, extension):
-    if ctx.author.id == jdata['owner']:
+async def load(ctx, *value):
+  if ctx.author.id == jdata['owner']:
+    if value == ():
+      await ctx.send("此處不可為空 請輸入組件名稱")
+    else:
+      try:
+        extension = ' '.join(value)
         bot.load_extension(F'cmds.{extension}')
         await ctx.send(f'\n已加載：{extension}')
         print('\n---------------------------------\n' + utc_8_date_str + f'\n已加載 {extension}\n---------------------------------\n')
+      except:
+        await ctx.send("錯誤：組件載入失敗")
+  else:
+      await ctx.send("此功能只能給機器人擁有者使用！")
+
 
 
 @bot.command(name= 'unload', aliases=['卸載' , '卸載模組' , '停用'])
-async def unload(ctx, extension):
-    if ctx.author.id == jdata['owner']:
+async def unload(ctx, *value):
+  if ctx.author.id == jdata['owner']:
+    if value == ():
+      await ctx.send("此處不可為空 請輸入組件名稱")
+    else:
+      try:
+        extension = ' '.join(value)
         bot.unload_extension(F'cmds.{extension}')
         await ctx.send(f'\n已卸載：{extension}')
         print('\n---------------------------------\n' + utc_8_date_str + f'\n已卸載 {extension}\n---------------------------------\n')
+      except:
+        await ctx.send("錯誤：卸載失敗")
+  else:
+      await ctx.send("此功能只能給機器人擁有者使用！")
+
 
 @bot.command(name= 'reload', aliases=['重載' , '重載模組' , '重新載入模組', '重新加載', '重啟'])
-async def reload(ctx, extension):
-    if ctx.author.id == jdata['owner']:
+async def reload(ctx, *value):
+  if ctx.author.id == jdata['owner']:
+    if value == ():
+      await ctx.send("此處不可為空 請輸入組件名稱")
+    else:
+      try:
+        extension = ' '.join(value)
         bot.reload_extension(F'cmds.{extension}')
         await ctx.send(f'\n已重新載入：{extension}')
         print('\n---------------------------------\n' + utc_8_date_str + f'\n已重新載入 {extension}\n---------------------------------\n')
+      except:
+        await ctx.send("錯誤：組件重新載入失敗")
+  else:
+      await ctx.send("此功能只能給機器人擁有者使用！")
+
 #機器人關閉系統--------------------------------------------   
 
 @bot.command(name= 'disconnect', aliases=['disable' , 'shutdown' , '關閉機器人' , '關機' , '關閉'])
@@ -105,6 +164,8 @@ async def turn_off_bot(ctx):
 for filename in os.listdir('./cmds'):
     if filename.endswith('.py'):
         bot.load_extension(f'cmds.{filename[:-3]}')
-        
+       
 if __name__ == "__main__":
+    #keep_alive.keep_alive()
     bot.run(jdata['TOKEN'])
+

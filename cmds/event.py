@@ -1,9 +1,7 @@
-import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
 from datetime import datetime,timedelta
 import json
-import time
 
 with open('setting.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
@@ -29,7 +27,7 @@ class event(Cog_Extension):
         fp.close()
     else:
         if str(msg.channel.type) == 'text' and msg.author != self.bot.user:
-            print(str(msg.author) + '說:' + msg.content)
+            print(THC + str(msg.author) + '說:' + msg.content)
             a = str(msg.guild)
             b = str(msg.channel)
             fp = open('./log/' + a + '-' + b + '.log', 'a',encoding='utf8')
@@ -39,7 +37,7 @@ class event(Cog_Extension):
 
 def time_converter(str_time):
     hours, minutes = map(int, str_time.split(':'))
-    am_or_pm = ['早上', '晚上'][hours >= 12]
+    am_or_pm = ['早上', '下午'][hours >= 12]
     return f'{am_or_pm} {(hours-1) % 12+1}:{minutes:02}'
 
 def setup(bot):

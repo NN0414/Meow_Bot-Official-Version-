@@ -1,4 +1,3 @@
-import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
 import re
@@ -13,6 +12,7 @@ class easycalc(Cog_Extension):
     @commands.command(name='calc', aliases=['計算機' , '計算'])
     async def calc(self,ctx, *args):
       msg = self.Calculation(' '.join(args))
+      print(' '.join(args))
       await ctx.send(msg)
 
     def Calculation(self, expr):
