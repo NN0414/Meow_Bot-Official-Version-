@@ -25,7 +25,6 @@ class test(Cog_Extension):
      else:
         emoji = self.bot.get_emoji(int(((em.split('>'))[0])[-18:]))
         await msg.add_reaction(emoji)
-
         
   
 def setup(bot):

@@ -16,6 +16,11 @@ class main(Cog_Extension):
         await ctx.send(f'延遲：{round(self.bot.latency*1000)} 毫秒 (ms)\n 機器人維持 {a} 秒')
         
 #==================================================================================
+    @commands.command()
+    async def avatar(self,ctx,userid:str='0'):
+        user = self.bot.get_user(int(userid))
+        asset = user.avatar_url
+        await ctx.send(str(asset))
 
 
 def setup(bot):
