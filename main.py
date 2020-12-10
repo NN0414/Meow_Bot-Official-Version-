@@ -9,7 +9,6 @@ import requests
 
 
 #os.system('pip install --upgrade pip')
-#os.system('pip install opencc-python-reimplemented')
 #os.system('pip install --upgrade discord.py')
 
 keeptime = 30
@@ -61,7 +60,7 @@ async def help(ctx):
     +str(jdata['command_prefix'])+'baro 查詢虛空商人剩餘時間或商品\n'
     +str(jdata['command_prefix'])+'riven 查詢Warframe.Market上的紫卡價格\n'
     +str(jdata['command_prefix'])+'sortie 突擊信息\n'
-    +'------------開放世界時間----------------'
+    +'------------開放世界時間----------------\n'
     +str(jdata['command_prefix'])+'POE 夜靈平原時間\n'
     +str(jdata['command_prefix'])+'Cambion 魔裔禁地時間\n'
     +str(jdata['command_prefix'])+'Orb 奧布山谷時間\n'
@@ -156,7 +155,7 @@ async def unload(ctx, extension:str='Null'):
       await ctx.send('權限不足 本指令只提供給Meow_Bot擁有者 \n擁有者為 <@436866339731275787> [小翔]')
 
 
-@bot.command(name= 'reload', aliases=['重載' , '重載模組' , '重新載入模組', '重新加載', '重啟'])
+@bot.command(name= 'reload', aliases=['重載' , '重載模組' , '重新載入模組', '重新加載', '重啟' , '重新載入'])
 async def reload(ctx, extension:str ='Null'):
   if ctx.author.id == jdata['owner']:
     if extension == 'Null':
