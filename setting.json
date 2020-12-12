@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
     "TOKEN": "[TOKEN]",
+=======
+    "TOKEN": "[Your TOKEN]",
+>>>>>>> 2afb1aaaace588ea584572c567fcd2e62f3d7d22
     "command_prefix":"-",
     "owner":[owner discord id],
     "url_pic":
