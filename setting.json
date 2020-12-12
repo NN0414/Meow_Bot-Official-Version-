@@ -1,11 +1,7 @@
 {
-<<<<<<< HEAD
-    "TOKEN": "[TOKEN]",
-=======
     "TOKEN": "[Your TOKEN]",
->>>>>>> 2afb1aaaace588ea584572c567fcd2e62f3d7d22
     "command_prefix":"-",
-    "owner":[owner discord id],
+    "owner":Your Discord ID [int],
     "url_pic":
        ["https://images.zi.org.tw/applealmond/2020/01/20095200/1579485119-72c988cfaddea239a8516c5b858c56e5.jpg",
         "https://cdn2.ettoday.net/images/2709/d2709695.jpg",

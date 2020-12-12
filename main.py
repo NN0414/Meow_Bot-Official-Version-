@@ -24,7 +24,7 @@ bot = commands.Bot(command_prefix='-',intents = intents)
 @bot.event
 async def on_ready():
     bot.unload_extension(F'cmds.test')
-    print(">> 目前版本：v2.3.0 <<")
+    print(">> 目前版本：v2.3.1 <<")
     print(">> Meow_Bot is online <<")
     while(1):
         await asyncio.sleep(keeptime)
@@ -59,6 +59,7 @@ async def help(ctx):
     +str(jdata['command_prefix'])+'wws [基礎近戰觸發 連擊數 額外觸發加成] 計算近戰塞創口潰爛觸發\n'
     +str(jdata['command_prefix'])+'baro 查詢虛空商人剩餘時間或商品\n'
     +str(jdata['command_prefix'])+'riven 查詢Warframe.Market上的紫卡價格\n'
+    +str(jdata['command_prefix'])+'wfm 查詢Warframe.Market上的物品價格\n'
     +str(jdata['command_prefix'])+'sortie 突擊信息\n'
     +'------------開放世界時間----------------\n'
     +str(jdata['command_prefix'])+'POE 夜靈平原時間\n'
@@ -87,6 +88,7 @@ async def alias(ctx):
     +str(jdata['command_prefix'])+'ms：[踩地雷]\n'
     +str(jdata['command_prefix'])+'baro [奸商 , Baro]\n'
     +str(jdata['command_prefix'])+'riven [紫卡 , 紫卡查詢]\n'
+    +str(jdata['command_prefix'])+'wfm [wm , 市場查詢]\n'
     +str(jdata['command_prefix'])+'sortie：[突擊 , 突襲]\n'
     +str(jdata['command_prefix'])+'POE：[夜靈平原時間 , 希圖斯時間 , 希圖斯]\n'
     +str(jdata['command_prefix'])+'Cambion：[魔裔禁地時間 , 火衛二 , 火衛二時間]\n'

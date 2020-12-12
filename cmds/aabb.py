@@ -108,7 +108,7 @@ class aabb(Cog_Extension):
         roles = []
         for i in member.roles:
             roles.append(i.name)
-        if '⫍管理小仙君⫎' in roles or str(ctx.message.author.id) == jdata['owner'] or ctx.message.author.id == ctx.guild.owner_id:
+        if str(ctx.message.author.id) == jdata['owner'] or ctx.message.author.id == ctx.guild.owner_id:
             global stat,aabbans,aabblist
             if stat == 1:
                 stat = 0

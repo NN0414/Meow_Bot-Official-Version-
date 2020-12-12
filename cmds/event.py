@@ -21,9 +21,7 @@ class event(Cog_Extension):
         for attachment in msg.attachments:
             att_url = attachment.url
             att_size = attachment.size
-        if '<@!737611092653637684>' in str(msg.content):
-            await msg.add_reaction(self.bot.get_emoji(int(710157217948631085)))
-        if '<@737611092653637684>' in str(msg.content):
+        if self.bot.user in msg.mentions:
             await msg.add_reaction(self.bot.get_emoji(int(710157217948631085)))
         if '-setuserid' in msg.content:
             return
@@ -135,4 +133,3 @@ def time_converter(str_time):
 
 def setup(bot):
     bot.add_cog(event(bot))
-
