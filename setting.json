@@ -1,7 +1,8 @@
 {
-    "TOKEN": "[Your TOKEN]",
+    "TOKEN": "YOUR TOKEN",
     "command_prefix":"-",
-    "owner":Your Discord ID [int],
+    "owner":owner_id(int),
+    "webhook":"werhook url",
     "url_pic":
        ["https://images.zi.org.tw/applealmond/2020/01/20095200/1579485119-72c988cfaddea239a8516c5b858c56e5.jpg",
         "https://cdn2.ettoday.net/images/2709/d2709695.jpg",

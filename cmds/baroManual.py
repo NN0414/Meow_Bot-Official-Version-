@@ -1,7 +1,10 @@
+import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
+import os
 import requests
 import json
+import asyncio
 import chinese_converter
 
 rawDict = requests.get("https://raw.githubusercontent.com/lonnstyle/riven-mirror/dev/src/i18n/lang/zh-Hant.json")
@@ -13,18 +16,16 @@ class baroManual(Cog_Extension):
   async def baroManual(self,ctx):
     url = requests.get("https://api.warframestat.us/pc/tc/voidTrader",headers={'Accept-Language':'zh','Cache-Control': 'no-cache'})
     html = json.loads(url.text)
-
-    location = html['location']
-    location = chinese_converter.to_traditional(location)
-    
     if html['active'] == True:
-      message = "```fix"
+      message = "```"
+      location = html['location']
+      location = chinese_converter.to_traditional(location)
       stay = html['endString']
       stay = stay.replace("d","天")
       stay = stay.replace("h","小時")
       stay = stay.replace("m","分鐘")
       stay = stay.replace("s","秒")
-      await ctx.send(f"Baro Ki'Teer(仆街奸商) 已經到達{location},停留時間為{stay}\t帶來的商品如下:")
+      await ctx.send(f"Baro Ki'Teer 已經到達{location},停留時間為{stay}\t帶來的商品如下:")
       for items in html['inventory']:
         item = items['item']
         item = item.lower()
@@ -44,14 +45,14 @@ class baroManual(Cog_Extension):
         message += f"物品:{name}\n杜卡德金幣:{ducats}\t現金:{credits}\n"
       message += "```"
       await ctx.send(message)
-    #if html['active'] == False:
-    else:
-      arrive = html['endString']
+    if html['active'] == False:
+      location = html['location']
+      location = chinese_converter.to_traditional(location)
+      arrive = html['startString']
       arrive = arrive.replace("d","天")
       arrive = arrive.replace("h","小時")
       arrive = arrive.replace("m","分鐘")
       arrive = arrive.replace("s","秒")
-      #arrive = html['location']
       await ctx.send(f"Baro Ki' Teer會在{arrive}後抵達{location}") 
 
 

@@ -5,6 +5,7 @@ import os
 import requests
 import json
 
+board = []
 
 class test(Cog_Extension):
     #清除訊息
@@ -25,7 +26,7 @@ class test(Cog_Extension):
      else:
         emoji = self.bot.get_emoji(int(((em.split('>'))[0])[-18:]))
         await msg.add_reaction(emoji)
-        
+       
   
 def setup(bot):
     bot.add_cog(test(bot))

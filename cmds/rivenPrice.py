@@ -1,7 +1,10 @@
+import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
+import os
 import requests
 import json
+import shutil
 
 with open('dict/Weapons.json', 'r', encoding='utf8') as weapons:
   weapons = json.load(weapons)

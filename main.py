@@ -11,7 +11,7 @@ import requests
 #os.system('pip install --upgrade pip')
 #os.system('pip install --upgrade discord.py')
 
-keeptime = 30
+keeptime = 10
 keepstatus = 1
 
 intents = discord.Intents.all()
@@ -24,7 +24,7 @@ bot = commands.Bot(command_prefix='-',intents = intents)
 @bot.event
 async def on_ready():
     bot.unload_extension(F'cmds.test')
-    print(">> 目前版本：v2.3.1 <<")
+    print(">> 目前版本：v2.3.4 <<")
     print(">> Meow_Bot is online <<")
     while(1):
         await asyncio.sleep(keeptime)
@@ -50,16 +50,19 @@ async def help(ctx):
     +'```'
     #--------------------遊戲類------------------------------
     +'遊戲類：\n```css\n'
-    +str(jdata['command_prefix'])+'ms 踩地雷\n'
+    +str(jdata['command_prefix'])+'ms <列> <行> <炸彈> 踩地雷\n'
     +str(jdata['command_prefix'])+'aabb help 查詢aabb如何開始和遊玩'
+    +str(jdata['command_prefix'])+'ooxx 開始和遊玩'
+    +str(jdata['command_prefix'])+'snake 貪食蛇 開始和遊玩'
     +'```'
     #--------------------WARFRAME-----------------------------
     +'WARFRAME：\n```css\n'
-    +str(jdata['command_prefix'])+'ccc [基礎近戰暴率 連擊數 額外暴率加成] 計算近戰塞急進猛突暴率\n'
-    +str(jdata['command_prefix'])+'wws [基礎近戰觸發 連擊數 額外觸發加成] 計算近戰塞創口潰爛觸發\n'
+    +str(jdata['command_prefix'])+'ccc <基礎近戰暴率> <連擊數> <額外暴率加成> 計算近戰塞急進猛突暴率\n'
+    +str(jdata['command_prefix'])+'wws <基礎近戰觸發> <連擊數> <額外觸發加成> 計算近戰塞創口潰爛觸發\n'
     +str(jdata['command_prefix'])+'baro 查詢虛空商人剩餘時間或商品\n'
     +str(jdata['command_prefix'])+'riven 查詢Warframe.Market上的紫卡價格\n'
     +str(jdata['command_prefix'])+'wfm 查詢Warframe.Market上的物品價格\n'
+    +str(jdata['command_prefix'])+'wiki [您要查詢的東西名稱]查詢wiki上的資訊\n'
     +str(jdata['command_prefix'])+'sortie 突擊信息\n'
     +'------------開放世界時間----------------\n'
     +str(jdata['command_prefix'])+'POE 夜靈平原時間\n'
@@ -85,7 +88,8 @@ async def alias(ctx):
     +str(jdata['command_prefix'])+'online [顯示上線成員 , 上線 , 在線]\n'
     +str(jdata['command_prefix'])+'offline [顯示下線成員 , 下線 , 顯示離線成員 , 離線]\n'
     +str(jdata['command_prefix'])+'picture：[pic , 圖片]\n'
-    +str(jdata['command_prefix'])+'ms：[踩地雷]\n'
+    +str(jdata['command_prefix'])+'ms：[minesweeper , 踩地雷]\n'
+    +str(jdata['command_prefix'])+'snake：[貪食蛇]\n'
     +str(jdata['command_prefix'])+'baro [奸商 , Baro]\n'
     +str(jdata['command_prefix'])+'riven [紫卡 , 紫卡查詢]\n'
     +str(jdata['command_prefix'])+'wfm [wm , 市場查詢]\n'
@@ -124,6 +128,22 @@ async def listmodel(ctx):
           dou = 0
   await ctx.send(f'```ini\n此機器人目前擁有的所有模組：\n{msg}```')
 
+@bot.command(name= 'downloadmod', aliases=['下載模組' , '模組下載' , '下載mod' , 'mod下載'])
+async def downloadmod(ctx, *args):
+    if ctx.author.id == jdata['owner']:
+        mod = ' '.join(args)
+        if mod == ():
+            await ctx.send(NullMod())
+        else:
+            try:
+                fileurl = 'cmds/' + mod + '.py'
+                print(fileurl+'\n')
+                await asyncio.sleep(0.5)
+                upfile = discord.File(F'{fileurl}')
+                await ctx.send(file = upfile)
+            except:
+                await ctx.send('錯誤：無法下載模組')
+
 
 @bot.command(name= 'load', aliases=['載入' , '載入模組' , '啟用'])
 async def load(ctx, extension:str ='Null'):
@@ -131,12 +151,9 @@ async def load(ctx, extension:str ='Null'):
     if extension == 'Null':
       await ctx.send(NullMod())
     else:
-      try:
-        bot.load_extension(F'cmds.{extension}')
-        await ctx.send(f'\n已加載：{extension}')
-        print('\n---------------------------------\n' + utc_8_date_str + f'\n已加載 {extension}\n---------------------------------\n')
-      except:
-        await ctx.send("錯誤：組件載入失敗")
+      bot.load_extension(F'cmds.{extension}')
+      await ctx.send(f'\n已加載：{extension}')
+      print('\n---------------------------------\n' + utc_8_date_str + f'\n已加載 {extension}\n---------------------------------\n')
   else:
       await ctx.send('權限不足 本指令只提供給Meow_Bot擁有者 \n擁有者為 <@436866339731275787> [小翔]')
 
@@ -163,12 +180,9 @@ async def reload(ctx, extension:str ='Null'):
     if extension == 'Null':
       await ctx.send(NullMod())
     else:
-      try:
-        bot.reload_extension(F'cmds.{extension}')
-        await ctx.send(f'\n已重新載入：{extension}')
-        print('\n---------------------------------\n' + utc_8_date_str + f'\n已重新載入 {extension}\n---------------------------------\n')
-      except:
-        await ctx.send("錯誤：組件重新載入失敗")
+      bot.reload_extension(F'cmds.{extension}')
+      await ctx.send(f'\n已重新載入：{extension}')
+      print('\n---------------------------------\n' + utc_8_date_str + f'\n已重新載入 {extension}\n---------------------------------\n')
   else:
       await ctx.send('權限不足 本指令只提供給Meow_Bot擁有者 \n擁有者為 <@436866339731275787> [小翔]')
 
@@ -222,6 +236,8 @@ for filename in os.listdir('./cmds'):
 if __name__ == "__main__":
     keep_alive.keep_alive()
     bot.run(jdata['TOKEN'])
+    #bot.run(jdata['TOKEN_CRAB'])
+    
 
 
  

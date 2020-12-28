@@ -55,18 +55,20 @@ class worldstate(Cog_Extension):
     except:
       await ctx.send(worldstate.FunctionFail())
 
-    #突擊
-  @commands.command(name='Sortie',aliases=['突擊' , '突襲'])
+  #突擊
+  @commands.command(name='Sortie',aliases=['突擊' , 'sortie'])
   async def sortie(self,ctx):
     try:
       count = 1
-      html_sortie = requests.get('https://api.warframestat.us/pc/zh/sortie',headers={'Accept-Language':'tc','Cache-Control': 'no-cache'})
-      data_sortie = json.loads(html_sortie.text)
-      await ctx.send(f"```fix\n突擊剩餘時間：{data_sortie['eta']}\n{data_sortie['boss']} 的部隊，{data_sortie['faction']}陣營```")
-      for missions in data_sortie['variants']:
-        node = chinese_converter.to_traditional(['node'])
-        missionType= chinese_converter.to_traditional(missions['missionType'])
-        modifier = chinese_converter.to_traditional(missions['modifier'])
+      raw = requests.get('https://api.warframestat.us/pc/zh/sortie',headers={'Accept-Language':'tc'})
+      text = raw.text
+      text = chinese_converter.to_traditional(text)
+      data = json.loads(text)
+      await ctx.send(f"```fix\n突擊剩餘時間：{data['eta']}\n{data['boss']} 的部隊，{data['faction']}陣營```")
+      for missions in data['variants']:
+        node = missions['node']
+        missionType= missions['missionType']
+        modifier = missions['modifier']
         await ctx.send(f'```ini\n突擊 [{count}]\n節點：{node} 等級：[{35+15*count} ~ {40+20*count}]\n任務：{missionType}\n狀態：{modifier}```')
         count += 1
     except:
@@ -85,6 +87,8 @@ class worldstate(Cog_Extension):
     minutes = int((timeLeft.seconds - timeLeft.seconds%60)/60)
     seconds = timeLeft.seconds%60
     await ctx.send(f"```\n當前仲裁任務(API並不穩定，僅供參考):\n任務:{data['type']}\n節點:{data['node']}\n敵人:{data['enemy']}\n剩餘時間:{minutes}分鐘{seconds}秒```")
+
+
 
 class FunctionFail(Exception):
   def __str__(self):
