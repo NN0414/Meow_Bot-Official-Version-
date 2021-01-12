@@ -1,7 +1,5 @@
-import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
-import os
 import requests
 import json
 import asyncio

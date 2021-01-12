@@ -4,6 +4,7 @@ from core.classes import Cog_Extension
 import os
 import requests
 import json
+import chinese_converter
 
 board = []
 
@@ -11,8 +12,10 @@ class test(Cog_Extension):
     #清除訊息
     @commands.command(name='test', aliases=['機器人測試', '測試'])
     async def t(self,ctx):
-      await ctx.send("test")
-      print("test")
+      x = chinese_converter.to_traditional("完成3项任意类型的噩梦任务")
+      await ctx.send(x)
+      print(x)
+      
     @commands.command(name='memtest')
     async def memtest(self,ctx,uid):
       guild = self.bot.get_guild(552875885070516235)

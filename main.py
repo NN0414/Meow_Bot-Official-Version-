@@ -24,11 +24,10 @@ bot = commands.Bot(command_prefix='-',intents = intents)
 @bot.event
 async def on_ready():
     bot.unload_extension(F'cmds.test')
-    print(">> 目前版本：v2.3.4 <<")
+    print(">> 目前版本：v2.3.5 <<")
     print(">> Meow_Bot is online <<")
     while(1):
         await asyncio.sleep(keeptime)
-        #print(str(keepstatus))
         if keepstatus == 1:
             requests.get("http://127.0.0.1:8080/")
 
@@ -64,6 +63,8 @@ async def help(ctx):
     +str(jdata['command_prefix'])+'wfm 查詢Warframe.Market上的物品價格\n'
     +str(jdata['command_prefix'])+'wiki [您要查詢的東西名稱]查詢wiki上的資訊\n'
     +str(jdata['command_prefix'])+'sortie 突擊信息\n'
+    +str(jdata['command_prefix'])+'fissure 遺物裂縫信息\n'
+    +str(jdata['command_prefix'])+'nightwave 午夜電波訊息\n'
     +'------------開放世界時間----------------\n'
     +str(jdata['command_prefix'])+'POE 夜靈平原時間\n'
     +str(jdata['command_prefix'])+'Cambion 魔裔禁地時間\n'
@@ -94,6 +95,7 @@ async def alias(ctx):
     +str(jdata['command_prefix'])+'riven [紫卡 , 紫卡查詢]\n'
     +str(jdata['command_prefix'])+'wfm [wm , 市場查詢]\n'
     +str(jdata['command_prefix'])+'sortie：[突擊 , 突襲]\n'
+    +str(jdata['command_prefix'])+'fissure [虛空裂縫 , 裂縫 , 遺物]\n'
     +str(jdata['command_prefix'])+'POE：[夜靈平原時間 , 希圖斯時間 , 希圖斯]\n'
     +str(jdata['command_prefix'])+'Cambion：[魔裔禁地時間 , 火衛二 , 火衛二時間]\n'
     +str(jdata['command_prefix'])+'Orb：[奧布山谷時間 , 福爾圖娜 , 福爾圖娜時間]\n'

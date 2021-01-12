@@ -1,9 +1,8 @@
-import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
 import random
-import os
 import json
+
 with open('setting.json','r',encoding='utf8') as jset:
     jdata = json.load(jset)
 
