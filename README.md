@@ -2,8 +2,10 @@
 
 pip install flask
 
-pip install opencc
+pip install OpenCC
 
 pip install discord
 
 pip install discord.py
+
+
