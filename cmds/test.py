@@ -4,31 +4,17 @@ from core.classes import Cog_Extension
 import os
 import requests
 import json
-import chinese_converter
 
-board = []
+
 
 class test(Cog_Extension):
     #清除訊息
     @commands.command(name='test', aliases=['機器人測試', '測試'])
-    async def t(self,ctx):
-      x = chinese_converter.to_traditional("完成3项任意类型的噩梦任务")
-      await ctx.send(x)
-      print(x)
-      
-    @commands.command(name='memtest')
-    async def memtest(self,ctx,uid):
-      guild = self.bot.get_guild(552875885070516235)
-      member = guild.get_member(int(uid))
-      await ctx.send(member)
-      print(member)
-    @commands.command()
-    async def www(self,ctx,msg,em):
-     if len(em)<2:
-        await msg.add_reaction(em)
-     else:
-        emoji = self.bot.get_emoji(int(((em.split('>'))[0])[-18:]))
-        await msg.add_reaction(emoji)
+    async def t(ctx):
+      await ctx.send("測試~~")
+      print("測試~")
+
+
        
   
 def setup(bot):

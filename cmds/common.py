@@ -1,26 +1,17 @@
 from discord.ext import commands
 from core.classes import Cog_Extension
-import random
 import json
-from random import randint
-
 
 with open('setting.json', 'r', encoding='utf8') as jfile:
     jdata = json.load(jfile)
 
-
 class Common(Cog_Extension):
-#    #ping
-#    @commands.command(name= 'ping', aliases=['延遲' , '機器人延遲' , 'delay'])
-#    async def ping(self, ctx):
-#        await ctx.send(f'{round(self.bot.latency*1000)} 毫秒 (ms)')
-
-    #隨機傳送圖片網址
-    @commands.command(name= 'picture', aliases=['pic' , '圖片'])
-    async def picture(self,ctx):
-        random_pic = random.choice(jdata['url_pic'])
-        await ctx.send(random_pic)
+    #ping
+    @commands.command(name= 'ping', aliases=['延遲' , '機器人延遲' , 'delay'])
+    async def ping(self, ctx):
+        await ctx.send(f'{round(self.bot.latency*1000)} 毫秒 (ms)')
     #查詢user資訊
+
     @commands.command(name= 'user', aliases=['使用者資訊' , '用戶資訊'])
     async def user(self,ctx):
         arg = ctx.message.channel
@@ -42,17 +33,6 @@ class Common(Cog_Extension):
           if value != str():
               await ctx.send(value)
  
-    @commands.command()
-    async def emmsg(self,ctx,msgid,em):
-        msg = await ctx.message.channel.fetch_message(int(msgid))
-        print(msg.content)
-        await ctx.message.delete()
-        if len(em)<18:
-            await msg.add_reaction(em)
-        else:
-            emoji = self.bot.get_emoji(int(((em.split('>'))[0])[-18:]))
-            await msg.add_reaction(emoji)
-        
     #近戰有塞急進猛突12x下的暴擊機率計算器
     @commands.command(name='ccc', aliases=['急進猛突' , '急進' , '極盡'])
     async def ccc(self,ctx,*,num):
@@ -82,8 +62,8 @@ class Common(Cog_Extension):
         await ctx.send(jdata['command_prefix']+'wws [基礎近戰觸發 連擊數 額外觸發加成]')
 
     #環形裝置
-    @commands.command()
-    async def 環形裝置(self,ctx):
+    @commands.command(name='toroid',aliases=['環形裝置'])
+    async def toroid(self,ctx):
       await ctx.send(f'```維加環形裝置→太空站          & 微蟎蛛型機\n告達環形裝置→昇華實驗室      & 賽托蛛型機(瓦內蜘蛛)\n索拉環形裝置→潤盈寺          & 凱塔蛛型機\n聖油環形裝置→利潤收割者圓蛛\n天藍環形裝置→剝削者圓蛛```')
 
     #香蕉君

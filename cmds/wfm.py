@@ -30,12 +30,14 @@ class wfm(Cog_Extension):
     if item == items:
       item = enDict.get(items,items)
     if item == items:
-      await ctx.send("Ordis不太清楚指揮官說的什麼呢") 
+      await ctx.send("Ordis不太清楚指揮官說的什麼呢")
+      print(item)
       return       
     url = "https://api.warframe.market/v1/items/" + item + "/orders"
     raw = requests.get(url)
     if raw.status_code != 200:
       await ctx.send("Ordis覺得...指揮官是不是搞錯了什麼")
+      print(url)
       return
     else:
       raw = json.loads(raw.text.encode(encoding='UTF-8'))
@@ -77,7 +79,7 @@ class wfm(Cog_Extension):
               else:
                 ChiRank = ""
               embed = DiscordEmbed(title=f"物品:{itemName}\t數量:{orders['quantity']}\t{ChiRank}",description=f"價格:{int(orders['platinum'])}")
-              embed.add_embed_field(name="複製信息", value =f"/w {user['ingame_name']} Hi! I want to buy: {itemName} {rank} for {int(orders['platinum'])} platinum. (warframe.market)")
+              embed.add_embed_field(name="複製信息", value =f"/w {user['ingame_name']} Hi! I want to Buy: {itemName} {rank} for {int(orders['platinum'])} platinum. (warframe.market)")
               avatar = user['avatar']
               if avatar == None:
                 avatar = "user/default-avatar.png"
@@ -97,7 +99,7 @@ class wfm(Cog_Extension):
               else:
                 ChiRank = ""
               message+=f"```賣家:{user['ingame_name']}\n物品:{itemName}\t數量:{orders['quantity']}\t{ChiRank}\n價格:{int(orders['platinum'])}\n"
-              message+=f"複製信息\n/w {user['ingame_name']} Hi! I want to buy: {itemName} {rank} for {int(orders['platinum'])} platinum. (warframe.market)```"
+              message+=f"複製信息\n/w {user['ingame_name']} Hi! I want to Buy: {itemName} {rank} for {int(orders['platinum'])} platinum. (warframe.market)```"
               count -= 1
         await ctx.send(message)
       

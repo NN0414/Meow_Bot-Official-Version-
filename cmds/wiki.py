@@ -5,20 +5,17 @@ from mwclient import Site
 
 connected = False
 
-zh = Site('warframe.huijiwiki.com', scheme='https')
 tc = Site('warframe.fandom.com', path='/zh-tw/', scheme='https')
 en = Site('warframe.fandom.com', path='/', scheme='https')
 
 subpage = {"Main":"概述","Prime":"Prime","Abilities":"技能","Equip":"可替換裝備","Patch_History":"更新歷史","Media":"影音資料"}
 
 class wiki(Cog_Extension):
-  @commands.command(name='wiki',aliases=['維基'])
+  @commands.command(name='wiki',aliases=['wf維基'])
   async def wiki(self,ctx,*args):
     name = " ".join(args)
-    page = zh.pages[name]
+    page = tc.pages[name]
     if page.exists == False:
-      page = tc.pages[name]
-      if page.exists == False:
         page = en.pages[name]
         if page.exists == False:
           await ctx.send("頁面不存在，Ordis在等待指揮官為Wiki作出貢獻呢")
@@ -29,18 +26,12 @@ class wiki(Cog_Extension):
           url = "https://warframe.fandom.com/wiki/"+name
           footer="英文Fandom"
           host = en
-      else:
+    else:
         page = page.resolve_redirect()
         name = page.name
         url = "https://warframe.fandom.com/zh-tw/wiki/"+name
         footer="繁中Fandom"
         host = tc
-    else:
-      page = page.resolve_redirect()
-      name = page.name
-      url = "https://warframe.huijiwiki.com/wiki/"+name
-      footer="灰機Wiki"
-      host = zh
     url = url.replace(" ","_")
     found = 0
     desc = "以下為嵌入頁面鏈接:\n"
@@ -52,7 +43,8 @@ class wiki(Cog_Extension):
     if desc == "以下為嵌入頁面鏈接:\n":
       desc = ""
     desc += "以下為相關頁面鏈接:\n"
-    for link in page.links():
+    for link in page.iwlinks():
+      print(link.name)
       if name in link.name:
         linkURL = url.replace(name,"")+link.name.replace(" ","_")
         if found <=5:

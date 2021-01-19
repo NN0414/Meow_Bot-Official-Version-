@@ -80,7 +80,7 @@ class worldstate(Cog_Extension):
       await ctx.send(worldstate.FunctionFail())
 
   #仲裁
-  @commands.command(name="Arbitration",aliases=['仲裁'])
+  @commands.command(name="arbitration",aliases=['仲裁'])
   async def arbitration(self,ctx):
     raw = requests.get("https://api.warframestat.us/pc/tc/arbitration",headers={'Accept-Language':'zh'})
     text = raw.text

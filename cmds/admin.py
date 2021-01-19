@@ -25,6 +25,20 @@ class admin(Cog_Extension):
         except:
           await ctx.send('請勿在私人頻道使用此功能')
           print('請勿在私人頻道使用這功能')
+    
+    @commands.command(name= 'avatar', aliases=['頭貼' , '頭像'])
+    async def avatar(self,ctx,userid:str='0'):
+        if ctx.message.author.id == jdata['owner']:
+            uid2 = userid.split('>')
+            uid = int((uid2[0])[-18:])
+            user = self.bot.get_user(int(uid))
+            if user == None:
+                await ctx.send('找不到指定用戶')
+            else:
+                asset = user.avatar_url
+                await ctx.send(str(asset))
+        else:
+          await ctx.send('權限不足')
 
     @commands.command(name= 'sendch', aliases=['發送至頻道'])
     async def sendch(self,ctx,chid,*,msg):
@@ -32,7 +46,7 @@ class admin(Cog_Extension):
             ch = self.bot.get_channel(int(chid))
             await ch.send(msg)
         else:
-            await ctx.send('權限不足 本指令只提供給Meow_Bot擁有者 \n擁有者為 <@436866339731275787> [小翔]')
+            await ctx.send(f'權限不足 本指令只提供給Meow_Bot擁有者 \n擁有者為 <@{jdata["owner"]}>')
             
     
     @commands.command(name= 'send', aliases=['私訊'])
@@ -50,7 +64,7 @@ class admin(Cog_Extension):
                 user2 = self.bot.get_user(int(user1[0]))
                 await user2.send(msg)
         else:
-            await ctx.send('權限不足 本指令只提供給Meow_Bot擁有者 \n擁有者為 <@436866339731275787> [小翔]')
+            await ctx.send(f'權限不足 本指令只提供給Meow_Bot擁有者 \n擁有者為 <@{jdata["owner"]}>')
     
     @commands.command(name='cmd', aliases=['終端機'])
     async def cmd(self,ctx,*,cmd):

@@ -4,7 +4,6 @@ from core.classes import Cog_Extension
 import os
 import requests
 import json
-import shutil
 
 with open('dict/Weapons.json', 'r', encoding='utf8') as weapons:
   weapons = json.load(weapons)
@@ -12,56 +11,48 @@ with open('dict/Weapons.json', 'r', encoding='utf8') as weapons:
 with open('dict/attributes.json', 'r', encoding='utf8') as attrDict:
   attrDict = json.load(attrDict)
 
-
-kuva_only = ["kuva_bramma", "kuva_chakkhurr","kuva_ayanga","kuva_shildreg"]
+kuva_only = ["kuva_bramma", "kuva_chakkhurr","kuva_ayanga","kuva_shildeg"]
 prime_only = ["euphona_prime","reaper_prime","dakra_prime"]
+
+def replace(name):
+  weapon = name
+  weapon = weapon.replace(" ","_")   
+  weapon = weapon.replace("_wraith","")
+  weapon = weapon.replace("_vandal","")
+  weapon = weapon.replace("prisma_","")
+  weapon = weapon.replace("mara_","")
+  weapon = weapon.replace("mk1-","")
+  weapon = weapon.replace("telos_","")
+  weapon = weapon.replace("synoid_","")
+  weapon = weapon.replace("secura_","")
+  weapon = weapon.replace("rakta_","")
+  weapon = weapon.replace("sancti_","")
+  weapon = weapon.replace("vaykor_","")
+  if weapon != "dex_dakra":
+    weapon = weapon.replace("dex_","")
+  if weapon not in prime_only:
+    weapon = weapon.replace("_prime","")
+  if weapon not in kuva_only:
+    weapon = weapon.replace("kuva_","")
+  return(weapon)
 
 class rivenPrice(Cog_Extension):
   @commands.command(name='riven',aliases=['紫卡','紫卡查詢'])
   async def rivenPrice(self,ctx,*args):
     msg = self.riven(' '.join(args))
     await ctx.send(msg)
-  def replacing(self,weapon):
-      weapon = weapon.replace("_wraith","")
-      weapon = weapon.replace("_vandal","")
-      weapon = weapon.replace("prisma_","")
-      weapon = weapon.replace("mara_","")
-      weapon = weapon.replace("mk1-","")
-      weapon = weapon.replace("telos_","")
-      weapon = weapon.replace("synoid_","")
-      weapon = weapon.replace("secura_","")
-      weapon = weapon.replace("rakta_","")
-      weapon = weapon.replace("sancti_","")
-      weapon = weapon.replace("vaykor_","")
-      weapon = weapon.replace("-","_")
-      weapon = weapon.replace("&","and")
-      return weapon
-      
+
   def riven(self,name):
-    Chinese = name
+    if name == "奶子":
+      return("你到底是有多喜歡奶子啊")
+    Chinese= name
     weapon = weapons.get(name, "Empty")
-    weapon = name.lower() if weapon == "Empty" else weapon.lower()
-
-    """if weapon == "Empty":
-      weapon = name.lower()
-    else:
-      weapon = weapon.lower()"""
-
-    weapon = weapon.replace(" ","_") 
-    weapon = self.replacing(weapon) # Remove the prefix or suffix of the weapon
-    # Special weapons
-    if weapon == "pangolin_prime":
-      weapon = "pangolin_sword"
-    elif weapon == "prime_laser_rifle":
-        weapon = "laser_rifle"
-    elif weapon != "dex_dakra":
-      weapon = weapon.replace("dex_","")
-    if weapon not in prime_only:
-      weapon = weapon.replace("_prime","")
-    if weapon not in kuva_only:
-      weapon = weapon.replace("kuva_","")
+    if weapon == "Empty":
+      weapon = name
+    weapon = weapon.lower()
+    weapon = replace(weapon)
+   
     
-    print(weapon)
     url = 'https://api.warframe.market/v1/auctions/search?type=riven&weapon_url_name=' + weapon + '&sort_by=price_asc'
     html = requests.get(url)
     weapon = weapon.replace("_"," ")
@@ -79,7 +70,7 @@ class rivenPrice(Cog_Extension):
           if owner['status'] != 'offline':
             rivenItem = items['item']
             rivenName = rivenItem['name']
-            message += f'```\n紫卡名稱:{weapon} {rivenName}\n'
+            message += f'```\n紫卡名稱:{Chinese} {rivenName}\n'
             ownerName = owner['ingame_name']
             message += f'賣家:{ownerName}\n'
             rank = rivenItem['mod_rank']
