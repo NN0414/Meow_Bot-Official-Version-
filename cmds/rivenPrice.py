@@ -4,58 +4,39 @@ from core.classes import Cog_Extension
 import os
 import requests
 import json
+import shutil
 
-with open('dict/Weapons.json', 'r', encoding='utf8') as weapons:
-  weapons = json.load(weapons)
+with open('dict/Weapons.json', 'r', encoding='utf8') as dict:
+  dict = json.load(dict)
 
 with open('dict/attributes.json', 'r', encoding='utf8') as attrDict:
   attrDict = json.load(attrDict)
 
-kuva_only = ["kuva_bramma", "kuva_chakkhurr","kuva_ayanga","kuva_shildeg"]
-prime_only = ["euphona_prime","reaper_prime","dakra_prime"]
-
-def replace(name):
-  weapon = name
-  weapon = weapon.replace(" ","_")   
-  weapon = weapon.replace("_wraith","")
-  weapon = weapon.replace("_vandal","")
-  weapon = weapon.replace("prisma_","")
-  weapon = weapon.replace("mara_","")
-  weapon = weapon.replace("mk1-","")
-  weapon = weapon.replace("telos_","")
-  weapon = weapon.replace("synoid_","")
-  weapon = weapon.replace("secura_","")
-  weapon = weapon.replace("rakta_","")
-  weapon = weapon.replace("sancti_","")
-  weapon = weapon.replace("vaykor_","")
-  if weapon != "dex_dakra":
-    weapon = weapon.replace("dex_","")
-  if weapon not in prime_only:
-    weapon = weapon.replace("_prime","")
-  if weapon not in kuva_only:
-    weapon = weapon.replace("kuva_","")
-  return(weapon)
 
 class rivenPrice(Cog_Extension):
   @commands.command(name='riven',aliases=['紫卡','紫卡查詢'])
   async def rivenPrice(self,ctx,*args):
     msg = self.riven(' '.join(args))
     await ctx.send(msg)
-
+  
   def riven(self,name):
-    if name == "奶子":
-      return("你到底是有多喜歡奶子啊")
     Chinese= name
-    weapon = weapons.get(name, "Empty")
+    name = name.replace(" ","_")
+    # Euphona and Reaper has only prime variant
+    # prime_only = ["euphona_prime", "reaper_prime"]
+    # if name_lower not in prime_only:
+    name_lower = name.lower()
+    if name_lower != "euphona_prime" and name_lower != "reaper_prime":
+      name = name_lower.replace("_prime","")
+      name = name.replace("prime","")
+    weapon = dict.get(name,"Empty")
     if weapon == "Empty":
       weapon = name
-    weapon = weapon.lower()
-    weapon = replace(weapon)
-   
-    
+    else:
+      weapon = weapon.lower()
+    print(weapon)
     url = 'https://api.warframe.market/v1/auctions/search?type=riven&weapon_url_name=' + weapon + '&sort_by=price_asc'
     html = requests.get(url)
-    weapon = weapon.replace("_"," ")
     if html.status_code != 200:
       return('查到...Ordis發生錯誤...API出錯！')
     else:

@@ -1,10 +1,11 @@
+import discord
 from discord.ext import commands
 from core.classes import Cog_Extension
+import os
 import requests
 import json
-from opencc import OpenCC
-
-cc = OpenCC('s2twp') #簡體中文 -> 繁體中文 (台灣, 包含慣用詞轉換)
+import asyncio
+import chinese_converter
 
 rawDict = requests.get("https://raw.githubusercontent.com/lonnstyle/riven-mirror/dev/src/i18n/lang/zh-Hant.json")
 Dict = json.loads(rawDict.text)
@@ -18,7 +19,7 @@ class baroManual(Cog_Extension):
     if html['active'] == True:
       message = "```"
       location = html['location']
-      location = cc.convert(location)
+      location = chinese_converter.to_traditional(location)
       stay = html['endString']
       stay = stay.replace("d","天")
       stay = stay.replace("h","小時")
@@ -46,8 +47,8 @@ class baroManual(Cog_Extension):
       await ctx.send(message)
     if html['active'] == False:
       location = html['location']
-      location = cc.convert(location)
-      arrive = html['startString']
+      location = chinese_converter.to_traditional(location)
+      arrive = html['endString']
       arrive = arrive.replace("d","天")
       arrive = arrive.replace("h","小時")
       arrive = arrive.replace("m","分鐘")
